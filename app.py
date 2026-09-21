@@ -661,12 +661,20 @@ with tab_como_opera:
 
     with demo_col3:
         st.markdown("**Paso 3: Distribución de Votos / Probabilidades**")
-        fig_demo3, ax_demo3 = plt.subplots(figsize=(4.2, 3.4), dpi=130)
+        # Mapeo robusto de probabilidades a los 10 dígitos (0 a 9)
+        clases_modelo = list(res["modelo"].classes_)
+        probabilidades_10 = np.zeros(10)
+        for idx_c, clase in enumerate(clases_modelo):
+            if 0 <= int(clase) < 10:
+                probabilidades_10[int(clase)] = proba_demo[idx_c]
+
         colores_barras = ["#2563eb" if d == pred_demo else "#94a3b8" for d in range(10)]
         if not es_acierto:
             colores_barras[pred_demo] = "#dc2626"
-            colores_barras[real_demo] = "#16a34a"
-        barras_prob = ax_demo3.bar(range(10), proba_demo * 100, color=colores_barras, edgecolor="#1e293b", alpha=0.9)
+            if 0 <= real_demo < 10:
+                colores_barras[real_demo] = "#16a34a"
+
+        barras_prob = ax_demo3.bar(range(10), probabilidades_10 * 100, color=colores_barras, edgecolor="#1e293b", alpha=0.9)
         ax_demo3.set_xlabel("Dígito Candidato", fontsize=8.5, fontweight="bold")
         ax_demo3.set_ylabel("Probabilidad (%)", fontsize=8.5, fontweight="bold")
         ax_demo3.set_xticks(range(10))
