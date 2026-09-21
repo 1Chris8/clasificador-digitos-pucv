@@ -661,6 +661,7 @@ with tab_como_opera:
 
     with demo_col3:
         st.markdown("**Paso 3: Distribución de Votos / Probabilidades**")
+        fig_demo3, ax_demo3 = plt.subplots(figsize=(4.2, 3.4), dpi=130)
         # Mapeo robusto de probabilidades a los 10 dígitos (0 a 9)
         clases_modelo = list(res["modelo"].classes_)
         probabilidades_10 = np.zeros(10)
